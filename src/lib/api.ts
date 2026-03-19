@@ -58,24 +58,31 @@ export interface ByYear {
 }
 
 export function getApiBase(): string {
-  // SSR / edge runtime — import.meta.env is available.
   if (typeof document === "undefined") {
-    return (import.meta.env.PUBLIC_API_URL as string | undefined) ?? "";
+    const url = import.meta.env.PUBLIC_API_URL as string | undefined;
+    console.log("[api] SSR base URL:", url);
+    return url ?? "";
   }
-  // Browser runtime — read from data attribute set by Base.astro.
   return document.documentElement.dataset.apiUrl ?? "";
 }
 
 async function apiFetch<T>(path: string, fallback: T): Promise<T> {
   try {
     const base = getApiBase();
-    if (!base) return fallback;
+    if (!base) {
+      console.warn("[api] no base URL, returning fallback for", path);
+      return fallback;
+    }
+    console.log("[api] fetching:", `${base}${path}`);
     const res = await fetch(`${base}${path}`);
-    if (!res.ok) return fallback;
+    if (!res.ok) {
+      console.warn("[api] bad response:", res.status, path);
+      return fallback;
+    }
     const json = await res.json();
-    return ((json && "data" in json ? json.data : undefined) ??
-      fallback) as T;
-  } catch {
+    return ((json && "data" in json ? json.data : undefined) ?? fallback) as T;
+  } catch (e) {
+    console.error("[api] error:", e, path);
     return fallback;
   }
 }
