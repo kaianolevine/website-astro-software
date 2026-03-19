@@ -38,7 +38,7 @@ const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
 
         <iframe
           id="resumeFrame"
-          class="h-[540px] w-full rounded-xl border border-white/10 bg-black/20"
+          class="h-[800px] w-full rounded-xl border border-white/10 bg-black/20"
           src=""
           title="Resume PDF"
         />
@@ -55,13 +55,16 @@ const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
   <script>
     function onTurnstileVerified(token) {
       const resumeUrl = "https://api.kaianolevine.com/api/v1/resume";
+      const viewerUrl = "https://docs.google.com/viewer?url=" +
+        encodeURIComponent(resumeUrl) + "&embedded=true";
+
       const content = document.getElementById("resumeContent");
       const link = document.getElementById("resumeLink");
       const frame = document.getElementById("resumeFrame");
       if (!content || !link || !frame) return;
 
       link.href = resumeUrl;
-      frame.src = resumeUrl;
+      frame.src = viewerUrl;
       content.classList.remove("hidden");
     }
 
