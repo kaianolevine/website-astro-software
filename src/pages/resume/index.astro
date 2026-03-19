@@ -53,24 +53,18 @@ const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
   ></script>
 
   <script>
-    const resumeUrl = "https://api.kaianolevine.com/api/v1/resume";
-
     function onTurnstileVerified(token) {
-      // The backend is expected to accept a Turnstile token query param.
-      const url = new URL(resumeUrl);
-      url.searchParams.set("turnstile_token", token);
-
+      const resumeUrl = "https://api.kaianolevine.com/api/v1/resume";
       const content = document.getElementById("resumeContent");
       const link = document.getElementById("resumeLink");
       const frame = document.getElementById("resumeFrame");
       if (!content || !link || !frame) return;
 
-      link.href = url.toString();
-      frame.src = url.toString();
+      link.href = resumeUrl;
+      frame.src = resumeUrl;
       content.classList.remove("hidden");
     }
 
-    // Expose callback name used in `data-callback`.
     window.onTurnstileVerified = onTurnstileVerified;
   </script>
 </Page>
