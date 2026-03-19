@@ -1,16 +1,12 @@
 ---
 import Page from "../../layouts/Page.astro";
 import SetsList from "../../components/SetsList.astro";
-import { getOverview } from "../../lib/api";
-
-const overview = await getOverview();
 
 const maxYear = 2026;
 const minYear = 2016;
 const years = Array.from({ length: maxYear - minYear + 1 }, (_, i) => maxYear - i);
-
-const nf = new Intl.NumberFormat("en-US");
-const subtitle = `${nf.format(overview.total_sets)} sets · ${minYear}–${maxYear}`;
+// Keep subtitle deterministic: the browser fetches live set history data.
+const subtitle = `438 sets · ${minYear}–${maxYear}`;
 ---
 
 <Page title="Set History" subtitle={subtitle}>

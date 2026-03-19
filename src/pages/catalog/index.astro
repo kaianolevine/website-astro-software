@@ -2,18 +2,12 @@
 import Page from "../../layouts/Page.astro";
 import TopArtists from "../../components/TopArtists.astro";
 import TopTracks from "../../components/TopTracks.astro";
-import { getTopArtists, getTopTracks } from "../../lib/api";
-
-const [artists, tracks] = await Promise.all([
-  getTopArtists(15),
-  getTopTracks(20),
-]);
 ---
 
 <Page title="Catalog" subtitle="Top artists and tracks from live DJ history.">
   <div class="grid gap-6 lg:grid-cols-2">
-    <TopArtists artists={artists} />
-    <TopTracks tracks={tracks} />
+    <TopArtists />
+    <TopTracks />
   </div>
 </Page>
 

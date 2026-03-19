@@ -54,11 +54,10 @@ The frontend makes browser requests to your FastAPI service, so `PUBLIC_API_URL`
 
 ### Frontend-called endpoints
 
-- `GET /v1/stats/overview` (build-time stats + sets page header)
+- `GET /v1/stats/overview` (client-side StatsBar)
 - `GET /v1/sets?year=&limit=&offset=` (client-side sets browser)
-- `GET /v1/sets/{id}` (SSR set detail)
-- `GET /v1/stats/top-artists?limit=` (build-time catalog)
-- `GET /v1/stats/top-tracks?limit=` (build-time catalog)
+- `GET /v1/stats/top-artists?limit=` (client-side catalog)
+- `GET /v1/stats/top-tracks?limit=` (client-side catalog)
 
 ### Backend requirement
 

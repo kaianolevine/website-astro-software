@@ -11,7 +11,11 @@ const fontsUrl =
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html
+  lang="en"
+  class="dark"
+  data-api-url={import.meta.env.PUBLIC_API_URL ?? ""}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

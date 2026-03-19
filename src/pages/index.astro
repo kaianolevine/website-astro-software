@@ -1,9 +1,6 @@
 ---
 import StatsBar from "../components/StatsBar.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { getOverview } from "../lib/api";
-
-const overview = await getOverview();
 
 const projects = [
   {
@@ -46,7 +43,7 @@ const projects = [
     </div>
   </div>
 
-  <StatsBar overview={overview} />
+  <StatsBar />
 
   <div class="grid gap-5 md:grid-cols-3">
     {projects.map((p) => (
