@@ -1,3 +1,9 @@
+Version 0.2.0 — 2026-03-19
+
+"Added live Pipeline Evaluation section to homepage.
+Surfaces AI evaluation findings from deejay-marvel-api.
+EvaluationSummary and RecentFindings components."
+
 Version 0.1.4 — 2026-03-19
 
 "Fixed SSR set detail page returning empty tracks. API base URL

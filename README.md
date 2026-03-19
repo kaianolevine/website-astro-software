@@ -58,6 +58,8 @@ The frontend makes browser requests to your FastAPI service, so `PUBLIC_API_URL`
 - `GET /v1/sets?year=&limit=&offset=` (client-side sets browser)
 - `GET /v1/stats/top-artists?limit=` (client-side catalog)
 - `GET /v1/stats/top-tracks?limit=` (client-side catalog)
+- `GET /v1/evaluations/summary` (client-side evaluation summary)
+- `GET /v1/evaluations?limit=5` (client-side recent findings)
 
 ### Backend requirement
 

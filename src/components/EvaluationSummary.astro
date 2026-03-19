@@ -1,0 +1,126 @@
+---
+---
+
+<section
+  class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 shadow-soft"
+  data-eval-summary
+>
+  <h3 class="font-display text-xl tracking-tight">Pipeline Evaluation</h3>
+  <p class="mt-1 text-sm text-slate-400">
+    AI-assisted conformance checks after every pipeline run
+  </p>
+
+  <div class="mt-5 space-y-3" data-eval-summary-list>
+    {Array.from({ length: 3 }).map((_, i) => (
+      <div
+        class="flex items-center justify-between gap-4 rounded-lg border border-white/5 bg-black/10 px-4 py-3"
+        key={i}
+      >
+        <div class="h-4 w-40 animate-pulse rounded bg-white/10"></div>
+        <div class="h-4 w-28 animate-pulse rounded bg-white/10"></div>
+      </div>
+    ))}
+  </div>
+
+  <p class="mt-4 text-xs text-slate-500">
+    Evaluated by Claude · Standards v6.0
+  </p>
+
+  <script type="module">
+    const root = document.querySelector("[data-eval-summary]");
+    if (!root) throw new Error("EvaluationSummary root not found");
+
+    const listEl = root.querySelector("[data-eval-summary-list]");
+    if (!listEl) throw new Error("EvaluationSummary list not found");
+
+    const BASE = document.documentElement.dataset.apiUrl || "";
+    if (!BASE) {
+      root.classList.add("hidden");
+    } else {
+      const baseUrl = String(BASE).replace(/\/$/, "");
+      const url = `${baseUrl}/v1/evaluations/summary`;
+      const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+      function formatDimension(raw) {
+        return String(raw ?? "")
+          .split("_")
+          .filter(Boolean)
+          .map((w) => w[0].toUpperCase() + w.slice(1))
+          .join(" ");
+      }
+
+      function relativeTime(iso) {
+        if (!iso) return "—";
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return "—";
+        const sec = Math.round((d.getTime() - Date.now()) / 1000);
+        const abs = Math.abs(sec);
+        if (abs < 60) return rtf.format(sec, "second");
+        const min = Math.round(sec / 60);
+        if (Math.abs(min) < 60) return rtf.format(min, "minute");
+        const hr = Math.round(min / 60);
+        if (Math.abs(hr) < 24) return rtf.format(hr, "hour");
+        const day = Math.round(hr / 24);
+        return rtf.format(day, "day");
+      }
+
+      function severityTag(label, count, activeClass) {
+        if (!count || Number(count) <= 0) return "";
+        return `<span class="${activeClass}">${count} ${label}</span>`;
+      }
+
+      async function load() {
+        try {
+          const res = await fetch(url, { cache: "no-store" });
+          if (!res.ok) {
+            root.classList.add("hidden");
+            return;
+          }
+
+          const json = await res.json();
+          const data = json?.data ?? [];
+          if (!Array.isArray(data)) {
+            root.classList.add("hidden");
+            return;
+          }
+
+          if (data.length === 0) {
+            listEl.innerHTML = `
+              <p class="py-3 text-sm text-slate-400">No evaluations recorded yet.</p>
+            `;
+            return;
+          }
+
+          listEl.innerHTML = "";
+          data.forEach((item, idx) => {
+            const row = document.createElement("div");
+            row.className =
+              "reveal flex items-center justify-between gap-4 rounded-lg border border-white/5 bg-black/10 px-4 py-3";
+            row.style.setProperty("--d", `${idx * 100}ms`);
+
+            const dimension = formatDimension(item?.dimension);
+            const errorTag = severityTag("error", item?.error_count, "text-red-400");
+            const warnTag = severityTag("warn", item?.warn_count, "text-amber-400");
+            const infoTag = severityTag("info", item?.info_count, "text-slate-400");
+            const tags = [errorTag, warnTag, infoTag].filter(Boolean).join(" · ");
+
+            row.innerHTML = `
+              <div class="min-w-0">
+                <div class="font-medium text-slate-100">${dimension || "Unknown"}</div>
+                <div class="mt-1 text-sm">${tags || '<span class="text-slate-500">No findings</span>'}</div>
+              </div>
+              <div class="shrink-0 text-xs text-slate-400">${relativeTime(item?.most_recent)}</div>
+            `;
+            listEl.appendChild(row);
+          });
+        } catch {
+          // Fail silently by hiding the whole section.
+          root.classList.add("hidden");
+        }
+      }
+
+      void load();
+    }
+  </script>
+</section>
+

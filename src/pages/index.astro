@@ -2,6 +2,8 @@
 import Base from "../layouts/Base.astro";
 import StatsBar from "../components/StatsBar.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import EvaluationSummary from "../components/EvaluationSummary.astro";
+import RecentFindings from "../components/RecentFindings.astro";
 
 const projects = [
   {
@@ -53,6 +55,19 @@ const projects = [
           <ProjectCard {...p} />
         </a>
       ))}
+    </div>
+
+    <div class="space-y-4">
+      <h2 class="font-display text-xl tracking-tight">
+        Live System Health
+      </h2>
+      <p class="text-sm text-slate-400">
+        Every pipeline run is evaluated by Claude against the
+        engineering standards document. Findings are stored and
+        surfaced here in real time.
+      </p>
+      <EvaluationSummary />
+      <RecentFindings />
     </div>
   </section>
 </Base>
