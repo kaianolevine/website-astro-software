@@ -1,7 +1,6 @@
 ---
 import Page from "../../layouts/Page.astro";
 
-const resumeUrl = "https://api.kaianolevine.com/api/v1/resume";
 const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
 ---
 
@@ -20,28 +19,20 @@ const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
         data-action="resume_view"
       />
 
-      <div id="resumeContent" class="mt-5 hidden space-y-4">
-        <div class="flex items-center justify-between gap-4 flex-wrap">
-          <a
-            id="resumeLink"
-            class="font-medium text-slate-200 transition-colors hover:text-accent"
-            target="_blank"
-            rel="noreferrer"
-            href={resumeUrl}
-          >
-            Open resume PDF
-          </a>
-          <span class="font-mono text-xs text-slate-400">
-            Source: <span class="text-slate-200">api.kaianolevine.com</span>
-          </span>
-        </div>
-
-        <iframe
-          id="resumeFrame"
-          class="h-[800px] w-full rounded-xl border border-white/10 bg-black/20"
-          src=""
-          title="Resume PDF"
-        />
+      <div id="resumeContent" class="hidden space-y-4">
+        <p class="text-sm text-slate-400">
+          Verification complete. Click below to open the resume.
+        </p>
+        <a
+          id="resumeLink"
+          href="https://api.kaianolevine.com/api/v1/resume"
+          target="_blank"
+          rel="noreferrer"
+          class="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-mono text-sm font-semibold text-black transition-opacity hover:opacity-90"
+        >
+          Open Resume PDF
+          <span aria-hidden="true">↗</span>
+        </a>
       </div>
     </div>
   </section>
@@ -54,17 +45,8 @@ const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
 
   <script>
     function onTurnstileVerified(token) {
-      const resumeUrl = "https://api.kaianolevine.com/api/v1/resume";
-      const viewerUrl = "https://docs.google.com/viewer?url=" +
-        encodeURIComponent(resumeUrl) + "&embedded=true";
-
       const content = document.getElementById("resumeContent");
-      const link = document.getElementById("resumeLink");
-      const frame = document.getElementById("resumeFrame");
-      if (!content || !link || !frame) return;
-
-      link.href = resumeUrl;
-      frame.src = viewerUrl;
+      if (!content) return;
       content.classList.remove("hidden");
     }
 
