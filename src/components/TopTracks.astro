@@ -1,0 +1,34 @@
+---
+import type { TrackStat } from "../lib/api";
+
+export let tracks: TrackStat[] = [];
+---
+
+<section class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 shadow-soft">
+  <h2 class="font-display text-xl tracking-tight">Top Tracks</h2>
+  <p class="mt-1 text-sm text-slate-400">
+    Ranked by total plays.
+  </p>
+
+  <ol class="mt-5 space-y-3">
+    {tracks.map((t, idx) => (
+      <li class="flex items-center justify-between gap-4" key={`${t.title}-${t.artist}`}>
+        <div class="flex min-w-0 items-baseline gap-3">
+          <div class="font-mono text-sm text-slate-500">
+            {String(idx + 1).padStart(2, "0")}
+          </div>
+          <div class="min-w-0">
+            <div class="truncate font-medium text-slate-100">
+              {t.title}
+            </div>
+            <div class="truncate text-sm text-slate-400">{t.artist}</div>
+          </div>
+        </div>
+        <div class="font-mono text-sm text-accent">
+          {t.play_count.toLocaleString("en-US")}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+

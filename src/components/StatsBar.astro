@@ -1,0 +1,50 @@
+---
+import type { StatsOverview } from "../lib/api";
+
+export let overview: StatsOverview | undefined;
+
+const nf = new Intl.NumberFormat("en-US");
+
+const safeOverview: StatsOverview =
+  overview ?? {
+    total_sets: 0,
+    total_plays: 0,
+    unique_tracks: 0,
+    years_active: 0,
+    most_played_artist: "",
+  };
+
+const stats = [
+  { value: nf.format(safeOverview.total_sets), label: "Sets" },
+  { value: nf.format(safeOverview.total_plays), label: "Plays" },
+  { value: nf.format(safeOverview.unique_tracks), label: "Tracks" },
+  { value: nf.format(safeOverview.years_active), label: "Years" },
+  {
+    value: safeOverview.most_played_artist || "—",
+    label: "Top Artist",
+  },
+] as const;
+---
+
+<section class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 shadow-soft">
+  <div class="grid grid-cols-2 gap-4 sm:grid-cols-5">
+    {stats.map((s, i) => (
+      <div
+        class="reveal text-center"
+        style={{ ["--d" as any]: `${i * 140}ms` }}
+      >
+        <div class="font-mono text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl">
+          {s.value}
+        </div>
+        <div class="mt-1 text-xs font-medium uppercase tracking-widest text-slate-400">
+          {s.label}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <p class="mt-5 text-center text-sm text-slate-300">
+    <span class="font-mono text-accent">Live data</span> · deejay-marvel-api
+  </p>
+</section>
+

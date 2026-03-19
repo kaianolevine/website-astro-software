@@ -1,0 +1,42 @@
+---
+import type { ArtistStat } from "../lib/api";
+
+export let artists: ArtistStat[] = [];
+
+const max = Math.max(...artists.map((a) => a.play_count), 1);
+---
+
+<section class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 shadow-soft">
+  <h2 class="font-display text-xl tracking-tight">Top Artists</h2>
+  <p class="mt-1 text-sm text-slate-400">
+    Bar length is proportional to play count.
+  </p>
+
+  <div class="mt-5 space-y-4">
+    {artists.map((a) => {
+      const pct = (a.play_count / max) * 100;
+      return (
+        <div class="group" key={a.artist}>
+          <div class="flex items-center justify-between gap-4">
+            <div class="min-w-0">
+              <div class="truncate font-medium text-slate-100">
+                {a.artist}
+              </div>
+            </div>
+            <div class="font-mono text-sm text-accent">
+              {a.play_count.toLocaleString("en-US")}
+            </div>
+          </div>
+
+          <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div
+              class="h-full bg-accent transition-[width] duration-500 group-hover:opacity-90"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>
+

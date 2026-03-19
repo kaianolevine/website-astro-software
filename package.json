@@ -1,0 +1,35 @@
+{
+  "name": "website-astro-software",
+  "version": "1.0.0",
+  "description": "Technical portfolio powered by live engineering data.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaianolevine/website-astro-software.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/kaianolevine/website-astro-software/issues"
+  },
+  "homepage": "https://github.com/kaianolevine/website-astro-software#readme",
+  "dependencies": {
+    "@astrojs/cloudflare": "^11.2.0",
+    "@astrojs/tailwind": "^6.0.2",
+    "astro": "^4.16.19",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^3.4.19"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.3"
+  }
+}

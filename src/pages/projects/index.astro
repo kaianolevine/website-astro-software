@@ -1,0 +1,36 @@
+---
+import Page from "../../layouts/Page.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const projects = [
+  {
+    title: "DJ Sets Platform",
+    description:
+      "The complete data pipeline: CSV exports from DJ software are ingested by deejay-set-processor-dev, normalized, written to Google Sheets, and posted to deejay-marvel-api — a FastAPI service backed by PostgreSQL on Railway. Exposes a typed REST API serving 438 sets and 13,529 track plays spanning 10 years.",
+    status: "Live",
+    link: "https://github.com/kaianolevine/deejay-marvel-api",
+  },
+  {
+    title: "Automation Ecosystem",
+    description:
+      "A suite of Python processor libraries built on a shared utility foundation (kaiano-common-utils). Processors handle DJ set ingestion, music naming and tagging, live music history, notes transcript processing, and Spotify playlist generation. All use uv, ruff, pytest, and GitHub Actions CI with automatic semantic versioning.",
+    status: "Active",
+    link: "https://github.com/kaianolevine/kaiano-common-utils",
+  },
+  {
+    title: "AI Pipeline Evaluation",
+    description:
+      "An AI-assisted process evaluation layer integrated into the development pipeline. After each pipeline run, Claude evaluates conformance against a defined standards document and stores structured findings in PostgreSQL. Findings are queryable via API and will surface on this site.",
+    status: "In Progress — Phase 3",
+  },
+] as const;
+---
+
+<Page title="Projects" subtitle="Systems I build, ship, and keep running with strong feedback loops.">
+  <div class="grid gap-5 md:grid-cols-3">
+    {projects.map((p) => (
+      <ProjectCard {...p} key={p.title} />
+    ))}
+  </div>
+</Page>
+

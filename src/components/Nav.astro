@@ -1,0 +1,46 @@
+---
+const { pathname } = Astro.url;
+
+type NavItem = { href: string; label: string };
+const items: NavItem[] = [
+  { href: "/", label: "Home" },
+  { href: "/sets", label: "Sets" },
+  { href: "/catalog", label: "Catalog" },
+  { href: "/projects", label: "Projects" },
+  { href: "/resume", label: "Resume" },
+];
+
+function isActive(href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+---
+
+<nav class="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
+  <a href="/" class="group flex items-baseline gap-3">
+    <span class="font-display text-lg tracking-tight text-slate-100 group-hover:text-accent">
+      Kaiano Levine
+    </span>
+    <span class="hidden text-xs font-mono text-slate-400 sm:inline">portfolio</span>
+  </a>
+
+  <div class="flex gap-5 text-sm">
+    {items.map((item) => {
+      const active = isActive(item.href);
+      return (
+        <a
+          href={item.href}
+          class={`transition-colors ${
+            active
+              ? "text-accent"
+              : "text-slate-300 hover:text-slate-100"
+          }`}
+          aria-current={active ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      );
+    })}
+  </div>
+</nav>
+

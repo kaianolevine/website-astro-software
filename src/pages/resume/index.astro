@@ -1,0 +1,77 @@
+---
+import Page from "../../layouts/Page.astro";
+
+const resumeUrl = "https://api.kaianolevine.com/api/v1/resume";
+const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
+---
+
+<Page title="Resume" subtitle="Verified access via Cloudflare Turnstile.">
+  <section class="mt-2 space-y-5">
+    <p class="text-sm text-slate-400">
+      This resume is protected to prevent automated scraping. Complete the
+      verification to reveal the PDF.
+    </p>
+
+    <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 shadow-soft">
+      <div
+        class="cf-turnstile"
+        data-sitekey={turnstileSiteKey}
+        data-callback="onTurnstileVerified"
+        data-action="resume_view"
+      />
+
+      <div id="resumeContent" class="mt-5 hidden space-y-4">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <a
+            id="resumeLink"
+            class="font-medium text-slate-200 transition-colors hover:text-accent"
+            target="_blank"
+            rel="noreferrer"
+            href={resumeUrl}
+          >
+            Open resume PDF
+          </a>
+          <span class="font-mono text-xs text-slate-400">
+            Source: <span class="text-slate-200">api.kaianolevine.com</span>
+          </span>
+        </div>
+
+        <iframe
+          id="resumeFrame"
+          class="h-[540px] w-full rounded-xl border border-white/10 bg-black/20"
+          src=""
+          title="Resume PDF"
+        />
+      </div>
+    </div>
+  </section>
+
+  <script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+
+  <script>
+    const resumeUrl = "https://api.kaianolevine.com/api/v1/resume";
+
+    function onTurnstileVerified(token) {
+      // The backend is expected to accept a Turnstile token query param.
+      const url = new URL(resumeUrl);
+      url.searchParams.set("turnstile_token", token);
+
+      const content = document.getElementById("resumeContent");
+      const link = document.getElementById("resumeLink");
+      const frame = document.getElementById("resumeFrame");
+      if (!content || !link || !frame) return;
+
+      link.href = url.toString();
+      frame.src = url.toString();
+      content.classList.remove("hidden");
+    }
+
+    // Expose callback name used in `data-callback`.
+    window.onTurnstileVerified = onTurnstileVerified;
+  </script>
+</Page>
+
