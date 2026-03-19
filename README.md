@@ -31,6 +31,16 @@ PUBLIC_API_URL=https://your-api-url.railway.app
 npm run build
 ```
 
+## Tests / Quality checks
+
+This project currently uses build-time verification (Astro type-check + compile).
+
+```bash
+npm run check
+```
+
+If you add automated tests later (e.g., API contract tests), list them here.
+
 ## Deploy (Cloudflare Pages)
 
 1. Connect this Git repository in Cloudflare Pages.

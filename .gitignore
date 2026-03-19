@@ -1,3 +1,26 @@
-node_modules
-dist
-.astro
+# Build output
+dist/
+
+# Astro cache
+.astro/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
