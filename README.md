@@ -31,6 +31,21 @@ PUBLIC_API_URL=https://your-api-url.railway.app
 npm run build
 ```
 
+## Versioning
+
+This repo uses semantic-release for automated versioning.
+Versions are determined automatically from commit messages
+on merge to main:
+
+- feat: → minor version bump (0.3.1 → 0.4.0)
+- fix: → patch version bump (0.3.1 → 0.3.2)
+- feat!: or BREAKING CHANGE → major bump (0.3.1 → 1.0.0)
+- chore/docs/refactor/test/ci → no version bump
+
+Never manually edit the version in package.json.
+Never manually edit CHANGELOG.md.
+Both are managed automatically on merge to main.
+
 ## Tests / Quality checks
 
 This project currently uses build-time verification (Astro type-check + compile).
