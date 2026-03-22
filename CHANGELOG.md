@@ -1,3 +1,8 @@
+Version 0.3.1 — 2026-03-22
+
+"Improved Pipeline Health run headers to show date and time
+instead of raw run ID. Added per-finding timestamps."
+
 Version 0.3.0 — 2026-03-22
 
 "Fixed project card layout on homepage. Added dedicated

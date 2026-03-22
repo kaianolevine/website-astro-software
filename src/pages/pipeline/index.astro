@@ -135,13 +135,11 @@ const subtitle =
       var timeFmt = new Intl.DateTimeFormat("en-US", {
         hour: "numeric",
         minute: "2-digit",
+        hour12: true,
       });
 
-      function formatTs(iso) {
-        if (!iso) return "—";
-        var d = new Date(iso);
-        if (Number.isNaN(d.getTime())) return "—";
-        return dateFmt.format(d) + " · " + timeFmt.format(d);
+      function evaluatedAt(f) {
+        return f.evaluated_at || f.created_at || f.timestamp || f.most_recent || null;
       }
 
       function formatDimension(raw) {
@@ -165,10 +163,6 @@ const subtitle =
         if (s === "ERROR") return "text-red-400 border-red-500/30 bg-red-500/10";
         if (s === "WARN") return "text-amber-400 border-amber-500/30 bg-amber-500/10";
         return "text-slate-300 border-slate-500/30 bg-slate-500/10";
-      }
-
-      function findingTs(f) {
-        return f.created_at || f.timestamp || f.most_recent || null;
       }
 
       function findingRepo(f) {
@@ -207,7 +201,7 @@ const subtitle =
         map.forEach(function (items, runId) {
           var maxTs = 0;
           for (var j = 0; j < items.length; j++) {
-            var t = new Date(findingTs(items[j]) || 0).getTime();
+            var t = new Date(evaluatedAt(items[j]) || 0).getTime();
             if (!Number.isNaN(t) && t > maxTs) maxTs = t;
           }
           runs.push({ runId: runId, items: items, maxTs: maxTs });
@@ -251,18 +245,20 @@ const subtitle =
         var html = "";
         for (var r = 0; r < runs.length; r++) {
           var run = runs[r];
-          var headerTs = findingTs(run.items[0]);
-          for (var k = 1; k < run.items.length; k++) {
-            var tk = new Date(findingTs(run.items[k]) || 0).getTime();
-            var th = new Date(headerTs || 0).getTime();
-            if (!Number.isNaN(tk) && tk > th) headerTs = findingTs(run.items[k]);
-          }
+          var headerIso = evaluatedAt(run.items[0]);
+          var headerD = headerIso ? new Date(headerIso) : null;
+          var headerOk = headerD && !Number.isNaN(headerD.getTime());
+          var headerDate = headerOk ? dateFmt.format(headerD) : "—";
+          var headerTime = headerOk ? timeFmt.format(headerD) : "—";
+          html += '<section class="space-y-3"><h3 class="flex flex-wrap items-baseline gap-x-1 text-sm font-normal text-slate-200">';
           html +=
-            '<section class="space-y-3"><h3 class="font-mono text-sm text-slate-300">Run ' +
-            escapeHtml(run.runId) +
+            "<span>" +
+            escapeHtml(headerDate) +
             " · " +
-            escapeHtml(formatTs(headerTs)) +
-            '</h3><div class="space-y-3">';
+            escapeHtml(headerTime) +
+            '</span><span class="text-slate-500">  ·  </span><span class="font-mono text-xs text-slate-500">Run ' +
+            escapeHtml(run.runId) +
+            "</span></h3><div class=\"space-y-3\">";
           for (var j = 0; j < run.items.length; j++) {
             var f = run.items[j];
             var sev = normalizeSeverity(f.severity);
@@ -270,7 +266,10 @@ const subtitle =
             var dim = formatDimension(f.dimension) || "Unknown";
             var ft = findingText(f);
             var sug = suggestionText(f);
-            var ts = formatTs(findingTs(f));
+            var rowIso = evaluatedAt(f);
+            var rowD = rowIso ? new Date(rowIso) : null;
+            var rowOk = rowD && !Number.isNaN(rowD.getTime());
+            var rowTimeOnly = rowOk ? timeFmt.format(rowD) : "—";
             var ridShort =
               String(f.run_id != null ? f.run_id : "")
                 .slice(0, 8) || "—";
@@ -286,6 +285,10 @@ const subtitle =
             html +=
               '<div class="text-sm font-medium text-slate-200">' + escapeHtml(dim) + "</div>";
             html += '<p class="text-sm leading-relaxed text-slate-300">' + escapeHtml(ft) + "</p>";
+            html +=
+              '<div class="mt-1 font-mono text-xs text-slate-500">' +
+              escapeHtml(rowTimeOnly) +
+              "</div>";
             if (sug) {
               html +=
                 '<p class="text-xs leading-relaxed text-slate-400">' + escapeHtml(sug) + "</p>";
@@ -299,7 +302,6 @@ const subtitle =
               '">' +
               escapeHtml(ridShort) +
               "</span>";
-            html += "<span>" + escapeHtml(ts) + "</span>";
             html += "</div></article>";
           }
           html += "</div></section>";
