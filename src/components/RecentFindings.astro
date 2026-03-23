@@ -161,6 +161,9 @@
             const sourceBadge = src
               ? `<span class="inline-flex items-center rounded-full border border-slate-600/40 bg-slate-700/30 px-2 py-0.5 text-[11px] font-mono text-slate-400">${src}</span>`
               : "";
+            const flowBadge = f?.flow_name
+              ? `<span class="inline-flex items-center rounded-full border border-slate-600/40 bg-slate-700/30 px-2 py-0.5 text-[11px] font-mono text-slate-400">${f.flow_name}</span>`
+              : "";
 
             row.innerHTML = `
               <div class="flex items-center justify-between gap-3">
@@ -168,6 +171,7 @@
                   <div class="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-mono ${severityClass(
                     severity,
                   )}">${severity}</div>
+                  ${flowBadge}
                   ${sourceBadge}
                   ${repeatBadge}
                 </div>

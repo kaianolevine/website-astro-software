@@ -264,6 +264,7 @@ const subtitle =
             var sev = normalizeSeverity(f.severity);
             var sc = severityClass(sev);
             var dim = formatDimension(f.dimension) || "Unknown";
+            var flowName = String(f.flow_name || "").trim();
             var ft = findingText(f);
             var sug = suggestionText(f);
             var rowIso = evaluatedAt(f);
@@ -284,6 +285,12 @@ const subtitle =
             html += '<div class="min-w-0 flex-1 space-y-2">';
             html +=
               '<div class="text-sm font-medium text-slate-200">' + escapeHtml(dim) + "</div>";
+            if (flowName) {
+              html +=
+                '<div class="text-xs font-mono text-slate-400">' +
+                escapeHtml(flowName) +
+                "</div>";
+            }
             html += '<p class="text-sm leading-relaxed text-slate-300">' + escapeHtml(ft) + "</p>";
             html +=
               '<div class="mt-1 font-mono text-xs text-slate-500">' +
