@@ -1,0 +1,56 @@
+---
+import Page from "../../layouts/Page.astro";
+
+const turnstileSiteKey = "0x4AAAAAACXUS6RYhJCvPzZg";
+---
+
+<Page title="Booking" subtitle="Verified access to prevent spam.">
+  <section class="mt-2 space-y-5">
+    <p class="text-sm text-slate-400">
+      Booking is protected to prevent automated spam. Complete the
+      verification to continue.
+    </p>
+
+    <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 shadow-soft">
+      <div
+        class="cf-turnstile"
+        data-sitekey={turnstileSiteKey}
+        data-callback="onTurnstileVerified"
+        data-action="booking_view"
+      />
+
+      <div id="bookingContent" class="hidden space-y-4">
+        <p class="text-sm text-slate-400">
+          Verification complete. Click below to book a meeting.
+        </p>
+        <a
+          id="bookingLink"
+          href="https://kaiano-general-meeting.youcanbook.me/"
+          target="_blank"
+          rel="noreferrer"
+          class="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-mono text-sm font-semibold text-black transition-opacity hover:opacity-90"
+        >
+          Book a Meeting
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+
+  <script>
+    function onTurnstileVerified(token) {
+      const content = document.getElementById("bookingContent");
+      if (!content) return;
+      content.classList.remove("hidden");
+    }
+
+    window.onTurnstileVerified = onTurnstileVerified;
+  </script>
+</Page>
+
