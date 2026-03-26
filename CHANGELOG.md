@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/kaianolevine/website-astro-software/compare/v1.4.0...v1.4.1) (2026-03-26)
+
+
+### Bug Fixes
+
+* api url ([8503077](https://github.com/kaianolevine/website-astro-software/commit/8503077c5233caf28860dd183a89e29d5eed2f7c))
+
 # [1.4.0](https://github.com/kaianolevine/website-astro-software/compare/v1.3.0...v1.4.0) (2026-03-25)
 
 
