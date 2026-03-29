@@ -14,9 +14,9 @@
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/kaianolevine/website-astro-software/issues"
+    "url": "https://github.com/mini-app-polis/website-astro-software/issues"
   },
-  "homepage": "https://github.com/kaianolevine/website-astro-software#readme",
+  "homepage": "https://github.com/mini-app-polis/website-astro-software#readme",
   "dependencies": {
     "@astrojs/cloudflare": "^11.2.0",
     "@astrojs/tailwind": "^6.0.2",
