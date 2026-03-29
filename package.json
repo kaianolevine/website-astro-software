@@ -8,10 +8,7 @@
     "preview": "astro preview",
     "check": "astro check"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kaianolevine/website-astro-software.git"
-  },
+  "repository": "https://github.com/mini-app-polis/website-astro-software.git",
   "keywords": [],
   "author": "",
   "license": "ISC",
