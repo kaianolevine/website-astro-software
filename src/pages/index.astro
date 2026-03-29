@@ -1,6 +1,5 @@
 ---
 import Base from "../layouts/Base.astro";
-import StatsBar from "../components/StatsBar.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import EvaluationSummary from "../components/EvaluationSummary.astro";
 import RecentFindings from "../components/RecentFindings.astro";
@@ -48,8 +47,6 @@ const projects = [
         </p>
       </div>
     </div>
-
-    <StatsBar />
 
     <div class="grid gap-5 md:grid-cols-3 items-stretch">
       {projects.map((p) => (
