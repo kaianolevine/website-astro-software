@@ -1,3 +1,11 @@
+## [1.4.3](https://github.com/mini-app-polis/website-astro-software/compare/v1.4.2...v1.4.3) (2026-03-29)
+
+
+### Bug Fixes
+
+* adding repo badge to findings ([0e2459f](https://github.com/mini-app-polis/website-astro-software/commit/0e2459ff51f50e7cd89932b9d42d0cc40974408d))
+* urls ([fa2a2ed](https://github.com/mini-app-polis/website-astro-software/commit/fa2a2edf319050a42e6b40141046b4ab6d4d722d))
+
 ## [1.4.2](https://github.com/kaianolevine/website-astro-software/compare/v1.4.1...v1.4.2) (2026-03-29)
 
 
