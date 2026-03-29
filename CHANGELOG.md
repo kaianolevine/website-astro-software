@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/mini-app-polis/website-astro-software/compare/v1.4.3...v1.5.0) (2026-03-29)
+
+
+### Features
+
+* **pipeline:** show repo badge on finding cards ([c808b87](https://github.com/mini-app-polis/website-astro-software/commit/c808b87883da33a0b6775e1bdc8b003496a2c6ad))
+
 ## [1.4.3](https://github.com/mini-app-polis/website-astro-software/compare/v1.4.2...v1.4.3) (2026-03-29)
 
 
