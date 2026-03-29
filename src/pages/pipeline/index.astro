@@ -75,33 +75,6 @@ const subtitle =
             >
               All
             </button>
-            <button
-              type="button"
-              data-repo="deejay-cog"
-              data-selected="false"
-              aria-pressed="false"
-              class="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-mono transition-colors hover:border-white/20 hover:text-slate-100 data-[selected=true]:border-accent data-[selected=true]:bg-accent/15 data-[selected=true]:text-accent"
-            >
-              deejay-cog
-            </button>
-            <button
-              type="button"
-              data-repo="evaluator-cog"
-              data-selected="false"
-              aria-pressed="false"
-              class="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-mono transition-colors hover:border-white/20 hover:text-slate-100 data-[selected=true]:border-accent data-[selected=true]:bg-accent/15 data-[selected=true]:text-accent"
-            >
-              evaluator-cog
-            </button>
-            <button
-              type="button"
-              data-repo="watcher-cog"
-              data-selected="false"
-              aria-pressed="false"
-              class="rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-mono transition-colors hover:border-white/20 hover:text-slate-100 data-[selected=true]:border-accent data-[selected=true]:bg-accent/15 data-[selected=true]:text-accent"
-            >
-              watcher-cog
-            </button>
           </div>
         </div>
       </div>
@@ -238,6 +211,38 @@ const subtitle =
           var sel = v === value;
           btn.setAttribute("data-selected", sel ? "true" : "false");
           btn.setAttribute("aria-pressed", sel ? "true" : "false");
+        }
+      }
+
+      function buildRepoButtons(findings) {
+        var repos = [];
+        var seen = {};
+        for (var i = 0; i < findings.length; i++) {
+          var r = findingRepo(findings[i]);
+          if (r && !seen[r]) {
+            seen[r] = true;
+            repos.push(r);
+          }
+        }
+        repos.sort();
+
+        // Remove all buttons except "All"
+        var existing = repoWrap.querySelectorAll("button[data-repo]:not([data-repo=''])");
+        for (var j = 0; j < existing.length; j++) {
+          existing[j].remove();
+        }
+
+        // Add a button per repo
+        for (var k = 0; k < repos.length; k++) {
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.setAttribute("data-repo", repos[k]);
+          btn.setAttribute("data-selected", "false");
+          btn.setAttribute("aria-pressed", "false");
+          btn.className =
+            "rounded-full border border-white/10 bg-white/[0.02] px-3 py-1 text-xs font-mono transition-colors hover:border-white/20 hover:text-slate-100 data-[selected=true]:border-accent data-[selected=true]:bg-accent/15 data-[selected=true]:text-accent";
+          btn.textContent = repos[k];
+          repoWrap.appendChild(btn);
         }
       }
 
@@ -379,6 +384,9 @@ const subtitle =
           for (var i = 0; i < chunk.length; i++) allFindings.push(chunk[i]);
           hasMore = chunk.length === pageSize;
           nextOffset += chunk.length;
+          if (nextOffset <= chunk.length) {
+            buildRepoButtons(allFindings);
+          }
         } catch (e) {
           allFindings = [];
           hasMore = false;
