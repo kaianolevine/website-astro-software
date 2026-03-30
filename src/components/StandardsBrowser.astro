@@ -1,0 +1,219 @@
+---
+/**
+ * StandardsBrowser
+ *
+ * Fetches the ecosystem-standards rules from GitHub at build time and renders
+ * a browsable view grouped by domain. Each rule shows its ID, title, severity,
+ * status, and description.
+ *
+ * All fetches are build-time (SSG). No client-side API calls.
+ */
+
+const BASE_URL =
+  "https://raw.githubusercontent.com/mini-app-polis/ecosystem-standards/main";
+
+// Rule shape from the standards YAML files
+interface Rule {
+  id: string;
+  title: string;
+  status: "requirement" | "convention" | "advisory" | "idea" | "gap";
+  dimension?: string;
+  severity?: "ERROR" | "WARN" | "INFO";
+  description: string;
+  checkable?: boolean;
+  check_notes?: string;
+  origin?: string;
+}
+
+interface DomainFile {
+  domain: string;
+  standards: Rule[];
+}
+
+interface IndexFile {
+  version: string;
+  files: string[];
+}
+
+// Friendly display names for domain file keys
+const DOMAIN_LABELS: Record<string, string> = {
+  principles: "Principles",
+  python: "Python",
+  testing: "Testing",
+  documentation: "Documentation",
+  api: "API",
+  pipeline: "Pipeline",
+  frontend: "Frontend",
+  delivery: "Delivery",
+  evaluation: "Evaluation",
+  "cross-stack": "Cross-Stack",
+};
+
+async function safeFetch(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return await res.text();
+  } catch {
+    return null;
+  }
+}
+
+// Minimal YAML parser for the specific structure we need.
+// The standards YAML is regular enough that we can parse it without a library.
+// Uses Astro's built-in yaml support via the js-yaml dep that ships with Astro.
+// @ts-ignore — js-yaml is available in Astro's node_modules
+import { load as parseYaml } from "js-yaml";
+
+// Fetch index to get version + file list
+let version = "unknown";
+let domainFiles: { label: string; key: string; rules: Rule[] }[] = [];
+let totalRules = 0;
+let checkableRules = 0;
+let fetchError = false;
+
+try {
+  const indexText = await safeFetch(`${BASE_URL}/index.yaml`);
+  if (indexText) {
+    const index = parseYaml(indexText) as IndexFile;
+    version = String(index.version ?? "unknown");
+
+    // Fetch all domain files in parallel
+    const domainKeys = (index.files ?? []).filter(
+      (f: string) => f !== "definitions-of-done.yaml" && f !== "ecosystem.yaml",
+    );
+
+    const fetched = await Promise.all(
+      domainKeys.map(async (filename: string) => {
+        const key = filename.replace(".yaml", "");
+        const text = await safeFetch(`${BASE_URL}/standards/${filename}`);
+        if (!text) return null;
+        try {
+          const data = parseYaml(text) as DomainFile;
+          return { key, rules: data.standards ?? [] };
+        } catch {
+          return null;
+        }
+      }),
+    );
+
+    for (const result of fetched) {
+      if (!result) continue;
+      const label = DOMAIN_LABELS[result.key] ?? result.key;
+      domainFiles.push({ label, key: result.key, rules: result.rules });
+      totalRules += result.rules.length;
+      checkableRules += result.rules.filter((r) => r.checkable).length;
+    }
+  } else {
+    fetchError = true;
+  }
+} catch {
+  fetchError = true;
+}
+
+function severityClass(severity?: string): string {
+  if (severity === "ERROR") return "text-red-400 border-red-500/30 bg-red-500/10";
+  if (severity === "WARN") return "text-amber-400 border-amber-500/30 bg-amber-500/10";
+  return "text-slate-300 border-slate-500/30 bg-slate-500/10";
+}
+
+function statusClass(status?: string): string {
+  if (status === "requirement") return "text-accent border-accent/30 bg-accent/10";
+  if (status === "convention") return "text-sky-400 border-sky-500/30 bg-sky-500/10";
+  if (status === "advisory") return "text-slate-300 border-white/10 bg-white/5";
+  if (status === "gap") return "text-rose-400 border-rose-500/30 bg-rose-500/10";
+  return "text-slate-500 border-white/10 bg-white/5";
+}
+---
+
+{fetchError ? (
+  <p class="text-sm text-slate-500">
+    Unable to load standards — check back shortly or view the
+    <a
+      href="https://github.com/mini-app-polis/ecosystem-standards"
+      target="_blank"
+      rel="noreferrer"
+      class="text-slate-300 underline hover:text-slate-100"
+    >repo directly</a>.
+  </p>
+) : (
+  <div class="space-y-3">
+    <!-- Header row: version + counts -->
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+      <span class="font-mono text-xs text-slate-400">
+        v{version}
+      </span>
+      <span class="text-xs text-slate-500">
+        {totalRules} rules · {checkableRules} checkable
+      </span>
+      <a
+        href="https://github.com/mini-app-polis/ecosystem-standards"
+        target="_blank"
+        rel="noreferrer"
+        class="font-mono text-xs text-slate-500 transition-colors hover:text-slate-200"
+      >
+        GitHub ↗
+      </a>
+    </div>
+
+    <!-- Domain sections -->
+    {domainFiles.map((domain) => (
+      <details class="group rounded-xl border border-white/10 bg-white/[0.02]" open={false}>
+        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-3 hover:bg-white/[0.02]">
+          <div class="flex items-center gap-3">
+            <span class="font-display text-sm tracking-tight text-slate-100">
+              {domain.label}
+            </span>
+            <span class="font-mono text-xs text-slate-500">
+              {domain.rules.length} rules
+            </span>
+          </div>
+          <svg
+            class="h-4 w-4 shrink-0 text-slate-500 transition-transform group-open:rotate-180"
+            viewBox="0 0 16 16"
+            fill="none"
+          >
+            <path
+              d="M4 6l4 4 4-4"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </summary>
+
+        <div class="divide-y divide-white/5 border-t border-white/5">
+          {domain.rules.map((rule) => (
+            <div class="space-y-1.5 px-4 py-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-mono text-xs text-slate-500">{rule.id}</span>
+                {rule.severity && (
+                  <span
+                    class={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-mono ${severityClass(rule.severity)}`}
+                  >
+                    {rule.severity}
+                  </span>
+                )}
+                {rule.status && (
+                  <span
+                    class={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-mono capitalize ${statusClass(rule.status)}`}
+                  >
+                    {rule.status}
+                  </span>
+                )}
+                {rule.checkable && (
+                  <span class="inline-flex items-center rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-xs font-mono text-emerald-400">
+                    checkable
+                  </span>
+                )}
+              </div>
+              <p class="text-sm font-medium text-slate-200">{rule.title}</p>
+              <p class="text-xs leading-relaxed text-slate-400">{rule.description}</p>
+            </div>
+          ))}
+        </div>
+      </details>
+    ))}
+  </div>
+)}

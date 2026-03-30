@@ -1,5 +1,6 @@
 ---
 import Page from "../../layouts/Page.astro";
+import StandardsBrowser from "../../components/StandardsBrowser.astro";
 
 type EcosystemService = {
   id: string;
@@ -164,4 +165,24 @@ const layers: {
       </section>
     ))}
   </div>
+
+  <section class="space-y-4 pt-4">
+    <div class="space-y-1">
+      <h2 class="font-display text-xl tracking-tight">Engineering Standards</h2>
+      <p class="text-sm text-slate-400">
+        The machine-readable spec that drives automated conformance checks across
+        every service. Fetched live from{" "}
+        <a
+          href="https://github.com/mini-app-polis/ecosystem-standards"
+          target="_blank"
+          rel="noreferrer"
+          class="font-mono text-slate-300 hover:text-slate-100"
+        >
+          ecosystem-standards
+        </a>{" "}
+        at build time.
+      </p>
+    </div>
+    <StandardsBrowser />
+  </section>
 </Page>
