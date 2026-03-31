@@ -1,3 +1,10 @@
+## [1.8.7](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.6...v1.8.7) (2026-03-31)
+
+
+### Bug Fixes
+
+* adding content back to homepage ([625b863](https://github.com/mini-app-polis/website-astro-software/commit/625b86372004fe572e85cd8d4eb7058a01195f82))
+
 ## [1.8.6](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.5...v1.8.6) (2026-03-31)
 
 
