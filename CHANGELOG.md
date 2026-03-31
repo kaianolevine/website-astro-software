@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.4...v1.8.5) (2026-03-31)
+
+
+### Bug Fixes
+
+* reconnecting after an api update ([f54a37d](https://github.com/mini-app-polis/website-astro-software/commit/f54a37d3f7029d68c036c125efb3ab38e6a75789))
+
 ## [1.8.4](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.3...v1.8.4) (2026-03-31)
 
 
