@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.0...v1.8.1) (2026-03-31)
+
+
+### Bug Fixes
+
+* rebuilds both filter button sets on every page ([55dfb0e](https://github.com/mini-app-polis/website-astro-software/commit/55dfb0e0cc6c5d6b275e820ba2ca44e34ed548d3))
+
 # [1.8.0](https://github.com/mini-app-polis/website-astro-software/compare/v1.7.4...v1.8.0) (2026-03-30)
 
 
