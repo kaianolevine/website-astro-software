@@ -32,6 +32,11 @@ interface DomainFile {
   rules?: Rule[];
 }
 
+interface IndexFile {
+  version?: string;
+  files?: Array<string | { file?: string }>;
+}
+
 // Friendly display names for domain file keys
 const DOMAIN_LABELS: Record<string, string> = {
   principles: "Principles",
@@ -86,19 +91,24 @@ let fetchError = false;
 try {
   const indexText = await fetchYamlText("index.yaml");
   if (indexText) {
-    const versionMatch = indexText.match(/^version:\s*([^\n]+)$/m);
-    version = versionMatch?.[1]?.trim() ?? "unknown";
+    const index = await parseYamlText<IndexFile>(indexText);
+    version = String(index?.version ?? "unknown");
 
-    const domainPaths = [...indexText.matchAll(/^\s*-\s+(standards\/[\w-]+\.yaml)\s*$/gm)]
-      .map((match) => match[1])
+    const rawFiles = index.files ?? [];
+    const domainKeys = rawFiles
+      .map((f: string | { file?: string }) => (typeof f === "string" ? f : f?.file))
       .filter(
         (path) =>
-          path !== "standards/definitions-of-done.yaml" && path !== "standards/ecosystem.yaml",
-      );
+          path &&
+          !path.includes("definitions-of-done") &&
+          !path.includes("ecosystem.yaml"),
+      )
+      .map((path) => path.replace("standards/", ""));
 
     const fetched = await Promise.all(
-      domainPaths.map(async (path: string) => {
-        const key = path.replace(/^standards\//, "").replace(".yaml", "");
+      domainKeys.map(async (filename: string) => {
+        const key = filename.replace(".yaml", "");
+        const path = `standards/${filename}`;
         const yamlText = await fetchYamlText(path);
         if (!yamlText) return null;
 
