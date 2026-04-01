@@ -1,3 +1,10 @@
+## [1.8.11](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.10...v1.8.11) (2026-04-01)
+
+
+### Bug Fixes
+
+* load standards via GitHub contents API ([d179ca0](https://github.com/mini-app-polis/website-astro-software/commit/d179ca0a08dd64ae2547c30117ab47176f74ddc1))
+
 ## [1.8.10](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.9...v1.8.10) (2026-04-01)
 
 
