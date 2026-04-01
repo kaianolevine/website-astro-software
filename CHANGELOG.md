@@ -1,3 +1,10 @@
+## [1.8.8](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.7...v1.8.8) (2026-04-01)
+
+
+### Bug Fixes
+
+* adjusting ecosystem fetch at build ([988a61d](https://github.com/mini-app-polis/website-astro-software/commit/988a61d318a69e524da35e23908d470d5f169cdc))
+
 ## [1.8.7](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.6...v1.8.7) (2026-03-31)
 
 
