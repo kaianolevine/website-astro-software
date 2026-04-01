@@ -1,34 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
-import ProjectCard from "../components/ProjectCard.astro";
 import EvaluationSummary from "../components/EvaluationSummary.astro";
 import FeatureFlags from "../components/FeatureFlags.astro";
-
-const projects = [
-  {
-    title: "DJ Sets Platform",
-    description:
-      "CSV exports from DJ software → deejay-cog normalization pipeline → api-kaianolevine-com REST API. 10 years of set history in PostgreSQL, served live.",
-    status: "Live",
-    link: "https://github.com/mini-app-polis/deejay-cog",
-  },
-  {
-    title: "Automation Ecosystem",
-    description:
-      "Python cogs on shared utilities (common-python-utils): watcher-cog polls Drive, deejay-cog ingests sets, evaluator-cog runs AI conformance checks after every pipeline run.",
-    status: "Active",
-    link: "/ecosystem",
-    linkLabel: "Ecosystem",
-  },
-  {
-    title: "AI Pipeline Evaluation",
-    description:
-      "After every pipeline run, Claude evaluates conformance against the ecosystem standards document. Findings stored in PostgreSQL and queryable via API. See Pipeline Health for live data.",
-    status: "Live",
-    link: "/pipeline",
-    linkLabel: "Pipeline Health",
-  },
-] as const;
 ---
 
 <Base title="Kaiano Levine — Software Engineer">
@@ -49,11 +22,73 @@ const projects = [
     </div>
 
     <div class="grid gap-5 md:grid-cols-3 items-stretch">
-      {projects.map((p) => (
-        <div class="h-full">
-          <ProjectCard {...p} />
+      <!-- Ecosystem -->
+      <a
+        href="/ecosystem"
+        class="group flex flex-col justify-between rounded-2xl border border-violet-500/20 bg-violet-500/5 p-5 transition-colors hover:border-violet-500/40"
+      >
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-display text-base tracking-tight text-slate-100">Ecosystem</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-xs text-slate-400">
+              Active
+            </span>
+          </div>
+          <p class="text-sm leading-relaxed text-slate-400">
+            Five active services — cogs, a shared library, a FastAPI, and two sites — all
+            running on Railway and Cloudflare Pages. Every service built to the same standards.
+          </p>
         </div>
-      ))}
+        <div class="pt-4 font-mono text-xs text-violet-400 transition-colors group-hover:text-violet-300">
+          View service map ↗
+        </div>
+      </a>
+
+      <!-- Standards -->
+      <a
+        href="/ecosystem#standards"
+        class="group flex flex-col justify-between rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5 transition-colors hover:border-emerald-500/40"
+      >
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-display text-base tracking-tight text-slate-100">
+              Engineering Standards
+            </span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-xs text-slate-400">
+              v1.6.0
+            </span>
+          </div>
+          <p class="text-sm leading-relaxed text-slate-400">
+            A machine-readable spec — 100+ rules across structure, testing, documentation, and
+            delivery — that drives automated conformance checks after every pipeline run.
+          </p>
+        </div>
+        <div class="pt-4 font-mono text-xs text-emerald-400 transition-colors group-hover:text-emerald-300">
+          Browse rules ↗
+        </div>
+      </a>
+
+      <!-- Pipeline Health -->
+      <a
+        href="/pipeline"
+        class="group flex flex-col justify-between rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 transition-colors hover:border-amber-500/40"
+      >
+        <div class="space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-display text-base tracking-tight text-slate-100">Pipeline Health</span>
+            <span class="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-xs text-slate-400">
+              Live
+            </span>
+          </div>
+          <p class="text-sm leading-relaxed text-slate-400">
+            After every pipeline run, Claude evaluates each service against the standards doc.
+            Findings are stored in PostgreSQL and surfaced here in real time.
+          </p>
+        </div>
+        <div class="pt-4 font-mono text-xs text-amber-400 transition-colors group-hover:text-amber-300">
+          View live findings ↗
+        </div>
+      </a>
     </div>
 
     <div class="space-y-4 rounded-2xl border border-white/10 bg-white/[0.02] p-6 shadow-soft">
