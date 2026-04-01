@@ -1,3 +1,10 @@
+## [1.8.9](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.8...v1.8.9) (2026-04-01)
+
+
+### Bug Fixes
+
+* updating api url ([7cf93ff](https://github.com/mini-app-polis/website-astro-software/commit/7cf93fff5e6bc71ac23440add7c8f1648cf617e2))
+
 ## [1.8.8](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.7...v1.8.8) (2026-04-01)
 
 
