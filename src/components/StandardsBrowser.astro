@@ -8,6 +8,7 @@
  *
  * All fetches are build-time (SSG). No client-side API calls.
  */
+import { load as parseYaml } from "js-yaml";
 
 const BASE_URL =
   "https://raw.githubusercontent.com/mini-app-polis/ecosystem-standards/main";
@@ -58,12 +59,6 @@ async function safeFetch(url: string): Promise<string | null> {
     return null;
   }
 }
-
-// Minimal YAML parser for the specific structure we need.
-// The standards YAML is regular enough that we can parse it without a library.
-// Uses Astro's built-in yaml support via the js-yaml dep that ships with Astro.
-// @ts-ignore — js-yaml is available in Astro's node_modules
-import { load as parseYaml } from "js-yaml";
 
 // Fetch index to get version + file list
 let version = "unknown";
