@@ -1,3 +1,10 @@
+## [1.8.15](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.14...v1.8.15) (2026-04-01)
+
+
+### Bug Fixes
+
+* updated projects setup ([7c4088b](https://github.com/mini-app-polis/website-astro-software/commit/7c4088be26c296c004d55101de505af27f225259))
+
 ## [1.8.14](https://github.com/mini-app-polis/website-astro-software/compare/v1.8.13...v1.8.14) (2026-04-01)
 
 
