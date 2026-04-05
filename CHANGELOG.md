@@ -1,3 +1,10 @@
+## [1.9.2](https://github.com/mini-app-polis/website-astro-software/compare/v1.9.1...v1.9.2) (2026-04-05)
+
+
+### Bug Fixes
+
+* scope evaluation summary to latest run per source type ([c72a524](https://github.com/mini-app-polis/website-astro-software/commit/c72a52495b75f0f7234a655b01029c5a98b1d9c9))
+
 ## [1.9.1](https://github.com/mini-app-polis/website-astro-software/compare/v1.9.0...v1.9.1) (2026-04-02)
 
 
